@@ -1,0 +1,41 @@
+version: '3'
+services:
+  front:
+    build:
+      context: './client'
+      dockerfile: Dockerfile 
+    ports:
+      - 3000:3000
+    container_name: react-container
+    environment:
+      - WATCHPACK_POLLING=true
+    networks:
+      - blood-bank-network
+    volumes:
+      - ./client:/app
+    env_file:
+      - ./client/.env  
+    depends_on:
+      - backend 
+
+  backend:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080  
+    container_name : express-container
+    networks:
+      - blood-bank-network
+    volumes:
+      - ./server:/app
+    env_file:
+      - ./server/.env  
+    # depends_on:
+    #   - mongo  
+
+networks:
+  blood-bank-network:
+  
+
+
